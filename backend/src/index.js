@@ -17,6 +17,38 @@ app.get('/', (req, res) => {
   res.json({ message: 'MAM Industries CRM API is online and running successfully!' });
 });
 
+// Debug endpoint to check DB connection status
+app.get('/api/debug-db', async (req, res) => {
+  try {
+    const dbUrl = process.env.DATABASE_URL;
+    if (!dbUrl) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'DATABASE_URL environment variable is not defined on Vercel'
+      });
+    }
+
+    const maskedDbUrl = dbUrl.replace(/:([^:@]+)@/, ':****@');
+
+    const result = await pool.query('SELECT NOW()');
+    res.json({
+      status: 'success',
+      message: 'Database connected successfully',
+      time: result.rows[0].now,
+      databaseUrlUsed: maskedDbUrl
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      message: err.message,
+      stack: err.stack,
+      databaseUrlUsed: process.env.DATABASE_URL 
+        ? process.env.DATABASE_URL.replace(/:([^:@]+)@/, ':****@')
+        : 'none'
+    });
+  }
+});
+
 // Initialize database tables and seed if empty
 try {
   await initDb();
