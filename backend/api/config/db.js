@@ -3,19 +3,19 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Remove conflicting PG env vars injected by Vercel integrations to ensure it uses the connectionString
-delete process.env.PGHOST;
-delete process.env.PGUSER;
-delete process.env.PGPASSWORD;
-delete process.env.PGDATABASE;
-delete process.env.PGPORT;
-
 const { Pool } = pg;
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:%237619365978.Mh@db.cuvpqoelhdmrifchyfcs.supabase.co:5432/postgres';
 
+// Parse database URL explicitly to bypass conflicting environment variables (like PGHOST) injected by Vercel
+const dbUrl = new URL(connectionString);
+
 export const pool = new Pool({
-  connectionString,
+  user: decodeURIComponent(dbUrl.username),
+  password: decodeURIComponent(dbUrl.password),
+  host: dbUrl.hostname,
+  port: dbUrl.port ? parseInt(dbUrl.port) : 5432,
+  database: dbUrl.pathname.substring(1),
   ssl: connectionString.includes('render.com') || connectionString.includes('supabase') 
     ? { rejectUnauthorized: false } 
     : false
