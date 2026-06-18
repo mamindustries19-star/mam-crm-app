@@ -5,7 +5,7 @@ import ScriptsLibrary from './components/ScriptsLibrary';
 import NotesManager from './components/NotesManager';
 import ConversionTracker from './components/ConversionTracker';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5001/api';
+const API_BASE = (import.meta.env.VITE_API_BASE || 'http://localhost:5001/api').trim();
 const SEGMENTS = ['OEM', 'EPC', 'Architecture', 'Factory', 'Defence'];
 const STATUSES = ['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost', 'Cold'];
 const PRESET_COLORS = ['#ef4444', '#3b82f6', '#10b981', '#eab308', '#8b5cf6', '#f97316', '#ec4899', '#14b8a6', '#6366f1', '#475569'];
