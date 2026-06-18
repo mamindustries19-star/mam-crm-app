@@ -71,11 +71,11 @@ export default function ScriptsLibrary() {
   const [copiedIndex, setCopiedIndex] = useState(null);
 
   // Customization states
-  const [name, setName] = useState('Rahul');
-  const [company, setCompany] = useState('Tata Motors');
-  const [city, setCity] = useState('Pune');
-  const [service, setService] = useState('solar structures');
-  const [yourName, setYourName] = useState('Matheen');
+  const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
+  const [city, setCity] = useState('');
+  const [service, setService] = useState('');
+  const [yourName, setYourName] = useState('');
 
   const personalizeText = (text) => {
     if (!text) return '';
